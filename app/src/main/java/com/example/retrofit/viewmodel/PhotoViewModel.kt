@@ -9,8 +9,7 @@ import com.example.retrofit.data.repository.PhotosRepository
 import com.example.retrofit.model.MyModel
 import kotlinx.coroutines.launch
 
-class PhotoViewModel:ViewModel() {
-    var repo = PhotosRepository()
+class PhotoViewModel(private val repo:PhotosRepository):ViewModel() {
     val apiLiveData = MutableLiveData<MyModel>()
 
     init{
@@ -19,15 +18,16 @@ class PhotoViewModel:ViewModel() {
 
     private fun getImages() {
         viewModelScope.launch {
-            val images = repo.getPhotos(Constants.KEY)
+            val images = repo.getPhotos()
 
-            if (images.isSuccessful){
-                apiLiveData.value = images.body()
-            }else{
-                Log.d("Load image",images.message())
-                Log.d("Load image",images.errorBody().toString())
+            images?.let {
+                if (images.isSuccessful){
+                    apiLiveData.value = images.body()
+                }else{
+                    Log.d("Load image",images.message())
+                    Log.d("Load image",images.errorBody().toString())
+                }
             }
         }
     }
-
 }

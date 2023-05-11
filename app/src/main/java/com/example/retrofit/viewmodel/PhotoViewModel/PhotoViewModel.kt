@@ -1,12 +1,11 @@
-package com.example.retrofit.viewmodel
+package com.example.retrofit.viewmodel.PhotoViewModel
 
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.retrofit.Constants
 import com.example.retrofit.data.repository.PhotosRepository
-import com.example.retrofit.model.MyModel
+import com.example.retrofit.model.MyModel.MyModel
 import kotlinx.coroutines.launch
 
 class PhotoViewModel(private val repo:PhotosRepository):ViewModel() {

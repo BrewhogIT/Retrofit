@@ -1,4 +1,4 @@
-package com.example.retrofit.fragments
+package com.example.retrofit.fragments.PhotosFragment
 
 import android.view.LayoutInflater
 import android.view.View
@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView.Adapter
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.example.retrofit.databinding.PhotoViewBinding
-import com.example.retrofit.model.MyModelItem
+import com.example.retrofit.model.MyModel.MyModelItem
 
 class PhotosAdapter : Adapter<PhotosAdapter.PhotosViewHolder>() {
     private var photosList = emptyList<MyModelItem>()

@@ -1,4 +1,4 @@
-package com.example.retrofit.model
+package com.example.retrofit.model.MyModel
 
 data class CurrentUserCollection(
     val cover_photo: Any,

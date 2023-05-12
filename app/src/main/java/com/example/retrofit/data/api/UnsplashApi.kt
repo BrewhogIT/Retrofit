@@ -10,7 +10,7 @@ import retrofit2.http.Query
 interface UnsplashApi {
 
     @Headers("Content-Type:  application/json;charset=utf-8")
-    @GET("/photos")
+    @GET("/photos?per_page=30")
     suspend fun getImages(@Query("client_id") API_KEY:String) : Response<MyModel>
 
     @Headers("Content-Type:  application/json;charset=utf-8")

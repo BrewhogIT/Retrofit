@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.viewModels
+import com.bumptech.glide.Glide
 import com.example.retrofit.R
 import com.example.retrofit.data.repository.PhotosRepository
 import com.example.retrofit.databinding.FragmentRndPhotoBinding
@@ -34,7 +35,10 @@ class RndPhotoFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         viewModel.apiLiveData.observe(viewLifecycleOwner,{
-            binding.idText.text = it.id
+            val imageUrl = it.urls.regular
+
+            Glide.with(requireActivity()).load(imageUrl).into(binding.ivRandomImage)
+            binding.idText.text = it.alt_description
         })
     }
 

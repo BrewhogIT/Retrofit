@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.viewModels
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.retrofit.data.repository.PhotosRepository
 import com.example.retrofit.databinding.FragmentPhotosBinding
@@ -41,8 +42,9 @@ class PhotosFragment : Fragment() {
         }
 
         val adapter = PhotosAdapter()
+        val layoutManager = GridLayoutManager(requireContext(),3)
         binding.recyclerview.adapter = adapter
-        binding.recyclerview.layoutManager = LinearLayoutManager(requireContext())
+        binding.recyclerview.layoutManager = layoutManager
 
         viewModel.apiLiveData.observe(viewLifecycleOwner,{list ->
             adapter.setData(list)

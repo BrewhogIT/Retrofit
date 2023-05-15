@@ -6,10 +6,20 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.retrofit.data.repository.PhotosRepository
 import com.example.retrofit.model.RandomModel.RandomModel
+import kotlinx.coroutines.channels.BufferOverflow
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.flow.emitAll
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.launch
 
 class RndPhotoViewModel(private val repo : PhotosRepository):ViewModel() {
-    val apiLiveData = MutableLiveData<RandomModel>()
+    private val _apiData = MutableSharedFlow<RandomModel>(replay = 1, onBufferOverflow = BufferOverflow.DROP_OLDEST)
+    val apiData: SharedFlow<RandomModel> = _apiData.asSharedFlow()
+
+    //val apiLiveData = MutableLiveData<RandomModel>()
+
 
     init{
         getRandomImage()
@@ -17,16 +27,25 @@ class RndPhotoViewModel(private val repo : PhotosRepository):ViewModel() {
 
     private fun getRandomImage() {
         viewModelScope.launch {
-            val randomPhoto = repo.getRandomPhoto()
 
-            randomPhoto?.let {
-                if (randomPhoto.isSuccessful){
-                    apiLiveData.value = randomPhoto.body()
-                }else{
-                    Log.d("Load image", randomPhoto.message())
-                    Log.d("Load image", randomPhoto.errorBody().toString())
+            _apiData.emitAll(
+                flow {
+                    repo.getRandomPhoto()?.body()?.let {
+                        emit(it)
+                    }
                 }
-            }
+            )
+
+//            val randomPhoto = repo.getRandomPhoto()
+//
+//            randomPhoto?.let {
+//                if (randomPhoto.isSuccessful){
+//                    apiLiveData.value = randomPhoto.body()
+//                }else{
+//                    Log.d("Load image", randomPhoto.message())
+//                    Log.d("Load image", randomPhoto.errorBody().toString())
+//                }
+//            }
         }
     }
 }

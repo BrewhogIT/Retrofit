@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.retrofit.data.repository.PhotosRepository
@@ -15,6 +16,9 @@ import com.example.retrofit.fragments.PhotosFragment.PhotosAdapter
 import com.example.retrofit.navigator.navigator
 import com.example.retrofit.viewmodel.PhotoVMFactory
 import com.example.retrofit.viewmodel.PhotoViewModel.PhotoViewModel
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
 
 class PhotosFragment : Fragment() {
     private lateinit var binding: FragmentPhotosBinding
@@ -46,9 +50,16 @@ class PhotosFragment : Fragment() {
         binding.recyclerview.adapter = adapter
         binding.recyclerview.layoutManager = layoutManager
 
-        viewModel.apiLiveData.observe(viewLifecycleOwner,{list ->
-            adapter.setData(list)
-        })
+        lifecycleScope.launch {
+            viewModel.apiData
+                .onEach { list->
+                    adapter.setData(list)
+                }.collect()
+        }
+
+//        viewModel.apiLiveData.observe(viewLifecycleOwner,{list ->
+//            adapter.setData(list)
+//        })
 
     }
 

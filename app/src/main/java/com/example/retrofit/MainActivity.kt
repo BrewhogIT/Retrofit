@@ -1,45 +1,38 @@
 package com.example.retrofit
 
 import android.os.Bundle
-import androidx.activity.OnBackPressedDispatcher
 import androidx.appcompat.app.AppCompatActivity
+import androidx.navigation.findNavController
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.navigateUp
+import androidx.navigation.ui.setupActionBarWithNavController
 import com.example.retrofit.databinding.ActivityMainBinding
-import com.example.retrofit.fragments.PhotosFragment.PhotosFragment
-import com.example.retrofit.fragments.RndPhotoFragment.RndPhotoFragment
-import com.example.retrofit.navigator.Navigator
 
 
-class MainActivity : AppCompatActivity(),Navigator{
+
+class MainActivity : AppCompatActivity() {
     private lateinit var binding : ActivityMainBinding
+    private lateinit var appBarConfiguration: AppBarConfiguration
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        if(savedInstanceState == null){
-            supportFragmentManager
-                .beginTransaction()
-                .add(R.id.fragment_container, PhotosFragment())
-                .commit()
+        //активируем ActionBar  с помощью navController
+        val navHostFragment = supportFragmentManager.findFragmentById(R.id.fragmentHost) as NavHostFragment
+        val navController = navHostFragment.navController
+        appBarConfiguration = AppBarConfiguration(navController.graph)
+        setupActionBarWithNavController(navController, appBarConfiguration)
         }
-        }
-
-    override fun goBack() {
-        onBackPressedDispatcher.onBackPressed()
-    }
-
-    override fun openSecondActivity() {
-        supportFragmentManager
-            .beginTransaction()
-            .addToBackStack(null)
-            .replace(R.id.fragment_container,RndPhotoFragment())
-            .commit()
-    }
 
     override fun onSupportNavigateUp(): Boolean {
-        goBack()
-        return super.onSupportNavigateUp()
+      // реализуем навигацию ActionBar  с помощью navController
+
+        val navController = findNavController(R.id.fragmentHost)
+        return navController.navigateUp(appBarConfiguration)
+                || super.onSupportNavigateUp()
     }
 
 }

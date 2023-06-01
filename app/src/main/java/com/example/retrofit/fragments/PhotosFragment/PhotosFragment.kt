@@ -5,15 +5,13 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.retrofit.R
 import com.example.retrofit.data.repository.PhotosRepository
 import com.example.retrofit.databinding.FragmentPhotosBinding
-import com.example.retrofit.fragments.PhotosFragment.PhotosAdapter
-import com.example.retrofit.navigator.navigator
 import com.example.retrofit.viewmodel.PhotoVMFactory
 import com.example.retrofit.viewmodel.PhotoViewModel.PhotoViewModel
 import kotlinx.coroutines.flow.collect
@@ -29,12 +27,7 @@ class PhotosFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
 
-        val activity : AppCompatActivity = requireActivity() as AppCompatActivity
-        activity.supportActionBar?.setDisplayHomeAsUpEnabled(false)
-        activity.supportActionBar?.title = "Images from Unsplash"
-
         binding = FragmentPhotosBinding.inflate(inflater,container,false)
-
         return binding.root
     }
 
@@ -42,7 +35,7 @@ class PhotosFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.randomImageBtn.setOnClickListener {
-            navigator().openSecondActivity()
+            findNavController().navigate(R.id.rndPhotoFragment)
         }
 
         val adapter = PhotosAdapter()
@@ -56,11 +49,5 @@ class PhotosFragment : Fragment() {
                     adapter.setData(list)
                 }.collect()
         }
-
-//        viewModel.apiLiveData.observe(viewLifecycleOwner,{list ->
-//            adapter.setData(list)
-//        })
-
     }
-
 }

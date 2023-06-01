@@ -5,11 +5,9 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
-import com.example.retrofit.R
 import com.example.retrofit.data.repository.PhotosRepository
 import com.example.retrofit.databinding.FragmentRndPhotoBinding
 import com.example.retrofit.viewmodel.PhotoVMFactory
@@ -26,10 +24,6 @@ class RndPhotoFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
 
-        val activity : AppCompatActivity = requireActivity() as AppCompatActivity
-        activity.supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        activity.supportActionBar?.title = "Random image from Unsplash"
-
         binding = FragmentRndPhotoBinding.inflate(inflater,container,false)
         return binding.root
     }
@@ -45,13 +39,5 @@ class RndPhotoFragment : Fragment() {
                     Glide.with(requireActivity()).load(imageUrl).into(binding.ivRandomImage)
                 }.collect()
         }
-
-//        viewModel.apiLiveData.observe(viewLifecycleOwner,{
-//            val imageUrl = it.urls.regular
-//
-//            Glide.with(requireActivity()).load(imageUrl).into(binding.ivRandomImage)
-//            binding.idText.text = it.alt_description
-//        })
     }
-
 }
